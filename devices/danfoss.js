@@ -21,7 +21,8 @@ module.exports = [
             tz.danfoss_heat_available, tz.danfoss_heat_required, tz.danfoss_day_of_week, tz.danfoss_trigger_time,
             tz.danfoss_window_open_internal, tz.danfoss_window_open_external, tz.danfoss_load_estimate,
             tz.danfoss_viewing_direction, tz.danfoss_external_measured_room_sensor, tz.thermostat_keypad_lockout,
-            tz.thermostat_system_mode, tz.danfoss_load_balancing_enable, tz.danfoss_load_room_mean],
+            tz.thermostat_system_mode, tz.danfoss_load_balancing_enable, tz.danfoss_load_room_mean,
+            tz.thermostat_pi_heating_demand],
         exposes: [e.battery(), e.keypad_lockout(),
             exposes.binary('mounted_mode_active', ea.STATE_GET, true, false)
                 .withDescription('Is the unit in mounting mode. This is set to `false` for mounted (already on ' +
@@ -39,8 +40,10 @@ module.exports = [
                 .withDescription('Whether or not the unit needs warm water. `false` No Heat Request or `true` Heat Request'),
             exposes.enum('setpoint_change_source', ea.STATE, ['manual', 'schedule', 'externally'])
                 .withDescription('Values observed are `0` (manual), `1` (schedule) or `2` (externally)'),
-            exposes.climate().withSetpoint('occupied_heating_setpoint', 5, 32, 0.5).withLocalTemperature().withPiHeatingDemand()
+            exposes.climate().withSetpoint('occupied_heating_setpoint', 5, 32, 0.5).withLocalTemperature()
                 .withSystemMode(['heat']).withRunningState(['idle', 'heat'], ea.STATE),
+            exposes.numeric('pi_heating_demand', ea.STATE_GET)
+                .withDescription("Position of the valve (= demanded heat) where 0% is fully closed and 100% is fully open").withUnit('%').withValueMin(0).withValueMax(100),
             exposes.numeric('external_measured_room_sensor', ea.ALL)
                 .withDescription('Set at maximum 3 hours interval but not more often than every 30 minutes at every 100 ' +
                     'value change. Resets every 3hours to standard. e.g. 21C = 2100 (-8000=undefined).'),
