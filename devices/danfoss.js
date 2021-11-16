@@ -21,7 +21,8 @@ module.exports = [
             tz.danfoss_heat_available, tz.danfoss_heat_required, tz.danfoss_day_of_week, tz.danfoss_trigger_time,
             tz.danfoss_window_open_internal, tz.danfoss_window_open_external, tz.danfoss_load_estimate,
             tz.danfoss_viewing_direction, tz.danfoss_external_measured_room_sensor, tz.thermostat_keypad_lockout,
-            tz.thermostat_system_mode, tz.danfoss_load_balancing_enable, tz.danfoss_load_room_mean],
+            tz.thermostat_system_mode, tz.danfoss_load_balancing_enable, tz.danfoss_load_room_mean,
+            tz.danfoss_adaptation_run_control, tz.danfoss_adaptation_run_settings, tz.danfoss_adaptation_run_status],
         exposes: [e.battery(), e.keypad_lockout(),
             exposes.binary('mounted_mode_active', ea.STATE_GET, true, false)
                 .withDescription('Is the unit in mounting mode. This is set to `false` for mounted (already on ' +
@@ -64,7 +65,13 @@ module.exports = [
             exposes.numeric('load_room_mean', ea.ALL)
                 .withDescription('Mean radiator load for room calculated by gateway for load balancing purposes'),
             exposes.numeric('load_estimate', ea.STATE_GET)
-                .withDescription('Load estimate on this radiator')],
+                .withDescription('Load estimate on this radiator'),
+            exposes.numeric('adaptation_run_control', ea.ALL)
+                .withDescription('Control of the adaptation run'),
+            exposes.numeric('adaptation_run_status', ea.STATE_GET)
+                .withDescription('Status of the adaptation run'),
+            exposes.numeric('adaptation_run_settings', ea.ALL)
+                .withDescription('Settings for the adaptation run')],
         ota: ota.zigbeeOTA,
         configure: async (device, coordinatorEndpoint, logger) => {
             const endpoint = device.getEndpoint(1);
@@ -114,6 +121,9 @@ module.exports = [
                 'danfossExternalMeasuredRoomSensor',
                 'danfossLoadBalancingEnable',
                 'danfossLoadRoomMean',
+                'danfossAdaptationRunControl',
+                'danfossAdaptationRunStatus',
+                'danfossAdaptationRunSettings',
             ], options);
 
             // read systemMode to have an initial value

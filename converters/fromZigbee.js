@@ -3053,6 +3053,15 @@ const converters = {
                 result[postfixWithEndpointName('thermostat_vertical_orientation', msg, model)] =
                     (msg.data['danfossThermostatOrientation'] === 1);
             }
+            if (msg.data.hasOwnProperty('danfossAdaptationRunControl')) {
+                result[postfixWithEndpointName('adaptation_run_control', msg, model)] = msg.data['danfossAdaptationRunControl'];
+            }
+            if (msg.data.hasOwnProperty('danfossAdaptationRunStatus')) {
+                result[postfixWithEndpointName('adaptation_run_status', msg, model)] = msg.data['danfossAdaptationRunStatus'];
+            }
+            if (msg.data.hasOwnProperty('danfossAdaptationRunSettings')) {
+                result[postfixWithEndpointName('adaptation_run_settings', msg, model)] = msg.data['danfossAdaptationRunSettings'];
+            }
             if (msg.data.hasOwnProperty('danfossExternalMeasuredRoomSensor')) {
                 result[postfixWithEndpointName('external_measured_room_sensor', msg, model)] =
                     msg.data['danfossExternalMeasuredRoomSensor'];
